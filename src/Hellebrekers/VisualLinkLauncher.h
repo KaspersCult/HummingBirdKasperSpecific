@@ -86,7 +86,7 @@ public:
   VisualLinkLauncher() : VisualLinkLauncher(ImGuiWindowFlags_None) {}
   // todo: remove hardcoded nu geen schik doei
   VisualLinkLauncher(const ImGuiWindowFlags flags)
-      : UIWindow(flags), m_currentFolder("opt", "/opt") {
+      : UIWindow(flags, "Visual link Launcher"), m_currentFolder("opt", "/opt") {
     m_clients = fetchAllClients();
 
     m_currentFolder = HummingBirdCore::Folder(m_clients[0].getName(),

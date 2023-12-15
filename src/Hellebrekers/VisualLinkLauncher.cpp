@@ -3,6 +3,7 @@
 //
 
 #include "VisualLinkLauncher.h"
+
 namespace HummingBirdKasper::VisualLink {
 void VisualLinkLauncher::render() {
   // Create list at the left side of the screen

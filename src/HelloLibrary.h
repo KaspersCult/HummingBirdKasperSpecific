@@ -10,7 +10,7 @@ namespace HummingBirdKasper {
     class HelloLibrary : public HummingBirdCore::UIWindow{
     public:
         HelloLibrary(): HelloLibrary(ImGuiWindowFlags_None) {}
-        HelloLibrary(const ImGuiWindowFlags flags) : UIWindow(flags) {
+        HelloLibrary(const ImGuiWindowFlags flags) : UIWindow(flags, "Hello Library") {
 
         }
 
