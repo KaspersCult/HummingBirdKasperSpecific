@@ -13,7 +13,7 @@ namespace HummingBirdKasper {
         std::cout << "Hello Library destroyed" << std::endl;
     }
 
-    void HelloLibrary::Render() {
+    void HelloLibrary::render() {
         ImGui::Text("Hello Library");
     }
 } // HummingBirdKasper

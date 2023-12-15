@@ -16,7 +16,7 @@ namespace HummingBirdKasper {
 
         ~HelloLibrary();
 
-        void Render() override;
+        void render() override;
 
         void HelloWorld();
     };
