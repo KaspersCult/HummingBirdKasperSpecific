@@ -9,46 +9,10 @@
 #include <Application.h>
 
 namespace HummingBirdKasper::VisualLink {
-struct Command {
-public:
-  Command(std::string name, std::string command, std::string location)
-      : name(name), command(command), location(location), m_terminalWindow() {}
-
-  ~Command() {
-
-  }
-
-  std::string getName() const { return name; }
-  std::string getCommand() const { return command; }
-  std::string getLocation() const { return location; }
-
-  void executeCommand() {
-    if (!m_terminalWindow) {
-      m_terminalWindow = std::make_shared<HummingBirdCore::Terminal::TerminalWindow>(ImGuiWindowFlags_None);
-    }
-
-    //convert location + command to char*
-    const std::string gotoloccomm = "cd " + location;
-    m_terminalWindow->executeCommand(gotoloccomm);
-    m_terminalWindow->executeCommand(this->command);
-    m_terminalWindow->m_isOpen = true;
-  }
-
-  void render() {
-    m_terminalWindow->render();
-  }
-
-private:
-  const std::string name;
-  const std::string location;
-  const std::string command;
-
-  std::shared_ptr<HummingBirdCore::Terminal::TerminalWindow> m_terminalWindow;
-};
 
 struct Client {
 public:
-  Client(std::string name, std::string location, std::vector<Command> commands)
+  Client(std::string name, std::string location, std::vector<HummingBirdCore::Terminal::Command> commands)
       : name(name), location(location), commands(commands) {}
 
   ~Client() = default;
@@ -57,16 +21,16 @@ public:
   std::string getLocation() const { return location; }
 
   std::vector<HummingBirdCore::Folder> getFolders() const {
-    std::vector<HummingBirdCore::Folder> folders =
-        HummingBirdCore::FileUtils::getFoldersInLocation(location);
-    return folders;
+//    std::vector<HummingBirdCore::Folder> folders =
+//        HummingBirdCore::FileUtils::getFoldersInLocation(location);
+    return std::vector<HummingBirdCore::Folder>{};
   }
 
-  std::vector<Command> getCommands() const {
+  std::vector<HummingBirdCore::Terminal::Command> getCommands() const {
     return commands;
   }
 
-  std::vector<Command> getRunningCommands() const { return runningCommands; }
+  std::vector<HummingBirdCore::Terminal::Command> getRunningCommands() const { return runningCommands; }
 
   void executeCommand(int index) {
     commands[index].executeCommand();
@@ -77,8 +41,8 @@ private:
   const std::string name;
   const std::string location;
 
-  std::vector<Command> commands;
-  std::vector<Command> runningCommands;
+  std::vector<HummingBirdCore::Terminal::Command> commands;
+  std::vector<HummingBirdCore::Terminal::Command> runningCommands;
 };
 
 class VisualLinkLauncher : public HummingBirdCore::UIWindow {
@@ -86,11 +50,10 @@ public:
   VisualLinkLauncher() : VisualLinkLauncher(ImGuiWindowFlags_None) {}
   // todo: remove hardcoded nu geen schik doei
   VisualLinkLauncher(const ImGuiWindowFlags flags)
-      : UIWindow(flags, "Visual link Launcher"), m_currentFolder("opt", "/opt") {
-    m_clients = fetchAllClients();
-
-    m_currentFolder = HummingBirdCore::Folder(m_clients[0].getName(),
-                                              m_clients[0].getLocation());
+      : UIWindow(flags, "Visual link Launcher") {
+//    m_clients = fetchAllClients();
+//
+//    m_currentFolder = HummingBirdCore::Folder(m_clients[0].getLocation());
   }
 
   ~VisualLinkLauncher() = default;
@@ -100,37 +63,36 @@ public:
 private:
   void changeClient(int index) {
     m_selectedClientIndex = index;
-    m_currentFolder = HummingBirdCore::Folder(m_clients[index].getName(),
-                                              m_clients[index].getLocation());
+//    m_currentFolder = HummingBirdCore::Folder(m_clients[index].getLocation());
   }
 
   std::vector<Client> fetchAllClients() {
-    std::vector<Client> clients;
-    std::vector<HummingBirdCore::Folder> folders =
-        HummingBirdCore::FileUtils::getFoldersInLocation(
-            c_defaultClientsLocation);
-
-    for (auto &folder : folders) {
-      std::string clientName = folder.getName();
-      std::string clientLocation = folder.getLocation();
-      std::vector<Command> commands;
-
-      // KeyCloak command
-      commands.emplace_back("KeyCloak Start",
-                            "./keycloak/bin/kc.sh start",
-                            clientLocation);
-
-      commands.emplace_back("Artemis Start",
-                            "./artemis/vlbroker/bin/artemis run",
-                            clientLocation);
-      commands.emplace_back("Wildfly Start",
-                            "./wildfly/bin/standalone.sh --debug",
-                            clientLocation);
-
-      clients.emplace_back(clientName, clientLocation, commands);
-    }
-
-    return clients;
+//    std::vector<Client> clients;
+//    std::vector<HummingBirdCore::Folder> folders =
+//        HummingBirdCore::FileUtils::getFoldersInLocation(
+//            c_defaultClientsLocation);
+//
+//    for (auto &folder : folders) {
+//      std::string clientName = folder.getName();
+//      std::string clientLocation = folder.getName();
+//      std::vector<HummingBirdCore::Terminal::Command> commands;
+//
+//      // KeyCloak command
+//      commands.emplace_back("KeyCloak Start",
+//                            "./keycloak/bin/kc.sh start",
+//                            clientLocation);
+//
+//      commands.emplace_back("Artemis Start",
+//                            "./artemis/vlbroker/bin/artemis run",
+//                            clientLocation);
+//      commands.emplace_back("Wildfly Start",
+//                            "./wildfly/bin/standalone.sh --debug",
+//                            clientLocation);
+//
+//      clients.emplace_back(clientName, clientLocation, commands);
+//    }
+//
+//    return clients;
   }
 
 private:
