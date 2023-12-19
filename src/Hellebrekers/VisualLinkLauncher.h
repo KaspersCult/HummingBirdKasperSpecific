@@ -33,7 +33,7 @@ public:
   std::vector<HummingBirdCore::Terminal::Command> getRunningCommands() const { return runningCommands; }
 
   void executeCommand(int index) {
-    commands[index].executeCommand();
+//    commands[index].executeCommand();
     runningCommands.push_back(commands[index]);
   }
 
